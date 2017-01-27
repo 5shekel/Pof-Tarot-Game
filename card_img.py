@@ -8,7 +8,7 @@ Usage:
   ./card_img.py filename num_cards training_image_filename training_labels_filename num_training_cards
 
 Example:
-  ./card_img.py CBD\a21.jpg 1 CBD\train\major22-train.jpg train.tsv 22
+  ./card_img.py CBD\a21.jpg 1 CBD\major22-train.jpg train.tsv 22
   
 Note: The recognition method is not very robust; please see SIFT / SURF for a good algorithm.  
 
@@ -68,7 +68,7 @@ def find_closest_card(training,img):
 def getCards(im, numcards=4):
   gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
   blur = cv2.GaussianBlur(gray,(1,1),1000)
-  flag, thresh = cv2.threshold(blur, 120, 255, cv2.THRESH_BINARY) 
+  flag, thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU) 
        
   _, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
