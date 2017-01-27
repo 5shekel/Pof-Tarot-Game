@@ -8,7 +8,7 @@ Usage:
   ./card_img.py filename num_cards training_image_filename training_labels_filename num_training_cards
 
 Example:
-  ./card_img.py test.JPG 4 train.png train.tsv 56
+  ./card_img.py CBD\a21.jpg 1 CBD\train\major22-train.jpg train.tsv 22
   
 Note: The recognition method is not very robust; please see SIFT / SURF for a good algorithm.  
 
@@ -70,7 +70,7 @@ def getCards(im, numcards=4):
   blur = cv2.GaussianBlur(gray,(1,1),1000)
   flag, thresh = cv2.threshold(blur, 120, 255, cv2.THRESH_BINARY) 
        
-  contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+  _, contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
   contours = sorted(contours, key=cv2.contourArea,reverse=True)[:numcards]  
 
@@ -78,11 +78,12 @@ def getCards(im, numcards=4):
     peri = cv2.arcLength(card,True)
     approx = rectify(cv2.approxPolyDP(card,0.02*peri,True))
 
-    # box = np.int0(approx)
-    # cv2.drawContours(im,[box],0,(255,255,0),6)
-    # imx = cv2.resize(im,(1000,600))
-    # cv2.imshow('a',imx)      
-    
+    #box = np.int0(approx)
+    #cv2.drawContours(im,[box],0,(255,255,0),6)
+    #imx = cv2.resize(im,(1000,600))
+    #cv2.imshow('a',imx)      
+    #cv2.waitKey(0)
+	
     h = np.array([ [0,0],[449,0],[449,449],[0,449] ],np.float32)
 
     transform = cv2.getPerspectiveTransform(approx,h)
@@ -129,10 +130,10 @@ if __name__ == '__main__':
       im = cv2.flip(im,1)
 
     # Debug: uncomment to see registered images
-    # for i,c in enumerate(getCards(im,num_cards)):
-    #   card = find_closest_card(training,c,)
-    #   cv2.imshow(str(card),c)
-    # cv2.waitKey(0) 
+    for i,c in enumerate(getCards(im,num_cards)):
+      card = find_closest_card(training,c,)
+      cv2.imshow(str(card),c)
+    cv2.waitKey(0) 
     
     cards = [find_closest_card(training,c) for c in getCards(im,num_cards)]
     print cards
