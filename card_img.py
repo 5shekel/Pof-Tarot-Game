@@ -8,7 +8,7 @@ Usage:
   ./card_img.py filename num_cards training_image_filename training_labels_filename num_training_cards
 
 Example:
-  ./card_img.py CBD\a21.jpg 1 CBD\major22-train.jpg train.tsv 22
+  ./card_img.py CBD/a21.jpg 1 CBD\major22-train.jpg train.tsv 22
   
 Note: The recognition method is not very robust; please see SIFT / SURF for a good algorithm.  
 
