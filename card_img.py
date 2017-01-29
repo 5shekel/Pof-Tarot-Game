@@ -83,7 +83,7 @@ def getCards(im, numcards=4):
     #imx = cv2.resize(im,(1000,600))
     #cv2.imshow('a',imx)      
     #cv2.waitKey(0)
-	
+    
     h = np.array([ [0,0],[449,0],[449,449],[0,449] ],np.float32)
 
     transform = cv2.getPerspectiveTransform(approx,h)
@@ -120,23 +120,30 @@ if __name__ == '__main__':
     num_training_cards = int(sys.argv[5])
     
     training = get_training(training_labels_filename,training_image_filename,num_training_cards)
+    
+    cap = cv2.VideoCapture(0)
+    opened=cap.isOpened()
+    while(opened):
+      ret, im = cap.read()
+      #im = cv2.imread(filename)
+      
+      width = cap.get(3)
+      height = cap.get(4)
+      if width < height:
+        im = cv2.transpose(im)
+        im = cv2.flip(im,1)
 
-    im = cv2.imread(filename)
-    
-    width = im.shape[0]
-    height = im.shape[1]
-    if width < height:
-      im = cv2.transpose(im)
-      im = cv2.flip(im,1)
-
-    # Debug: uncomment to see registered images
-    for i,c in enumerate(getCards(im,num_cards)):
-      card = find_closest_card(training,c,)
-      cv2.imshow(str(card),c)
-    cv2.waitKey(0) 
-    
-    cards = [find_closest_card(training,c) for c in getCards(im,num_cards)]
-    print cards
-    
+      # Debug: uncomment to see registered images
+      for i,c in enumerate(getCards(im,num_cards)):
+        card = find_closest_card(training,c,)
+        cv2.imshow(str(card),c)
+      cv2.waitKey(0) 
+      
+      cards = [find_closest_card(training,c) for c in getCards(im,num_cards)]
+      print cards
+      # When everything done, release the capture
+      cap.release()
+      cv2.destroyAllWindows()
+      
   else:
     print __doc__
