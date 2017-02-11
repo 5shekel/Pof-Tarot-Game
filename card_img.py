@@ -129,13 +129,15 @@ if __name__ == '__main__':
       
       width = cap.get(3)
       height = cap.get(4)
+      print  '{} x {}'.format(width, height)
+      
       if width < height:
         im = cv2.transpose(im)
         im = cv2.flip(im,1)
 
       # Debug: uncomment to see registered images
       for i,c in enumerate(getCards(im,num_cards)):
-        card = find_closest_card(training,c,)
+        card = find_closest_card(training,c)
         cv2.imshow(str(card),c)
       cv2.waitKey(0) 
       
