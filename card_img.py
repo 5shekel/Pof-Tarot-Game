@@ -8,7 +8,7 @@ Usage:
   ./card_img.py filename num_cards training_image_filename training_labels_filename num_training_cards
 
 Example:
-  ./card_img.py CBD/a21.jpg 1 CBD\major22-train.jpg train.tsv 22
+  ./card_img.py CBD/a21.jpg 1 CBD/major22-train.jpg train.tsv 22
   
 Note: The recognition method is not very robust; please see SIFT / SURF for a good algorithm.  
 
@@ -59,6 +59,7 @@ def imgdiff(img1,img2):
 
 def find_closest_card(training,img):
   features = preprocess(img)
+  cv2.imshow('a',features)
   return sorted(training.values(), key=lambda x:imgdiff(x[1],features))[0][0]
   
    
@@ -121,10 +122,13 @@ if __name__ == '__main__':
     
     training = get_training(training_labels_filename,training_image_filename,num_training_cards)
     
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     opened=cap.isOpened()
     while(opened):
       ret, im = cap.read()
+      cv2.imshow('a',im) 
+      cv2.waitKey(0) 
+      
       #im = cv2.imread(filename)
       
       width = cap.get(3)
